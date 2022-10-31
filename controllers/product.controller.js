@@ -43,7 +43,7 @@
      });
      res.status(200).send({
          status: true,
-         message: 'Product delete successfully'
+         message: 'Product delete success'
      });
  }
 
