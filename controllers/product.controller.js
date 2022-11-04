@@ -4,8 +4,23 @@
  } = require('uuid');
 
  const getAllProduct = async (req, res) => {
-     const products = await Product.find({});
-     res.status(200).send(products);
+
+    const page = parseInt(req.query.page);
+    const size = parseInt(req.query.size);
+
+    const cursor = await Product.find({});
+
+    let products;
+    if(page || size){
+        products = cursor.skip(page *10 ).limit(size);
+    }
+    else{
+        products =  cursor;
+    }
+
+    console.log(products);
+    res.send(products);
+     
  };
 
  const createProduct = async (req, res) => {
@@ -45,10 +60,21 @@
          status: true,
          message: 'Product delete success'
      });
+ };
+
+
+
+ const productCounter = async (req, res) => {
+     const count = await Product.estimatedDocumentCount();
+     res.send({
+         count
+     });
  }
+
 
  module.exports = {
      getAllProduct,
      createProduct,
-     deleteProduct
+     deleteProduct,
+     productCounter
  }
